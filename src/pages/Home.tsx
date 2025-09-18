@@ -1,21 +1,22 @@
 import React from 'react';
-import EmissionCard from '../components/EmissionCard';
-import Partner from '../components/Partner';
-import AlreadyProduced from '../components/AlreadyProduced';
-import Actuality from '../components/Actuality';
-import HeadBanner from '../components/HeadBanner';
-import CompetCardCours from '../components/CompetCardCours';
+import AsideBarRight from '../components/AsideBarRight';
+import Main from '../components/Main';
 
 const Home: React.FC = () => {
   return (
-    <>
-    <HeadBanner />
-    <CompetCardCours />
-    <EmissionCard titleComponent="Nos Concepts"  titleButton="Plus de détails"/>
-    <Partner />
-    <AlreadyProduced />
-    <Actuality />
-    </>
+    <div className="min-h-screen bg-white overflow-x-hidden">
+      <div className="flex h-screen max-w-full">
+        
+        <div className="flex-1 h-full overflow-y-auto overflow-x-hidden min-w-0">
+          <Main />
+        </div>
+        
+        <div className="flex-shrink-0 w-80 h-full overflow-y-auto overflow-x-hidden bg-gray-50">
+          <AsideBarRight />
+        </div>
+        
+      </div>
+    </div>
   );
 };
 

@@ -15,8 +15,8 @@ export default defineConfig({
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Ziktalent',
-        short_name: 'Ziktalent',
+        name: 'Cartoon',
+        short_name: 'Cartoon',
         description: 'Description de mon application',
         theme_color: '#ffffff',
         icons: [
