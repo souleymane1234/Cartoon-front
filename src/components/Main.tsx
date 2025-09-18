@@ -8,11 +8,9 @@ import {
 import CustomButton from "./ui/CustomButton";
 import CustomButtonWithoutBackground from "./ui/CustomButtonWithoutBackground";
 import { Play, Plus } from 'lucide-react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
 
   const studioLogos = [
     { src: "/img/studio/afrikaToon.png", alt: "AfrikaToon" },

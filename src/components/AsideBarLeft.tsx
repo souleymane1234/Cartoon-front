@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -12,16 +12,11 @@ import {
 } from '@mui/material';
 import {
   Explore,
-  TrendingUp,
-  Schedule,
   History,
   Download,
   DarkMode,
   Settings,
   LiveTv,
-  HowToVote,
-  Article,
-  Info,
   EmojiEvents
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -29,7 +24,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const AsideBarLeft = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = React.useState(false);
 
   const menuItems = [
     {
@@ -80,18 +75,18 @@ const AsideBarLeft = () => {
   ];
 
   // Fonction pour vérifier si un lien est actif
-  const isLinkActive = (link) => {
+  const isLinkActive = (link: string): boolean => {
     if (link === '/' && location.pathname === '/') {
       return true;
     }
-    return location.pathname.startsWith(link) && link !== '/';
+    return link !== '/' && location.pathname.startsWith(link);
   };
 
-  const handleNavigation = (link) => {
+  const handleNavigation = (link: string) => {
     navigate(link);
   };
 
-  const handleDarkModeToggle = (event) => {
+  const handleDarkModeToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDarkMode(event.target.checked);
     // Ici vous pouvez ajouter la logique pour activer/désactiver le mode sombre
     // Par exemple, ajouter/supprimer une classe sur le body ou utiliser un context

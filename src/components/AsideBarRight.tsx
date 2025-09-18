@@ -1,14 +1,11 @@
-import React from 'react';
 import {
   Box,
   Typography,
   Avatar,
-  Card,
   CardContent,
   Grid,
   Button,
   Rating,
-  Chip
 } from '@mui/material';
 import TheatersIcon from '@mui/icons-material/Theaters';
 import CustomButtonBorder from './ui/CustomButtonBorder';

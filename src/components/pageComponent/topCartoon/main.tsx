@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   Typography,
@@ -115,7 +114,7 @@ const Main = () => {
 
         {/* Grille responsive pour les cartes */}
         <Grid container spacing={{ xs: 2, md: 3 }}>
-          {actionCartoons.map((cartoon, index) => (
+          {actionCartoons.map((cartoon) => (
             <Grid size={{ xs: 6, sm: 4, lg:3 }} key={cartoon.id}>
               <Box 
                 className="overflow-hidden cursor-pointer"

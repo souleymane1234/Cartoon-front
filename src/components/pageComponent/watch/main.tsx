@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Typography,
@@ -16,7 +16,7 @@ import {
 } from '@mui/icons-material';
 
 const Main = () => {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = React.useState(false);
 
   return (
         <Box 
