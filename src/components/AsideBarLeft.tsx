@@ -45,7 +45,7 @@ const AsideBarLeft = () => {
       id: 3,
       title: 'À venir',
       icon: <EmojiEvents />,
-      link: '#',
+      link: '/coming-soon',
       active: false
     }
   ];
@@ -55,7 +55,7 @@ const AsideBarLeft = () => {
       id: 6,
       title: 'Joués récemment',
       icon: <History />,
-      link: '#',
+      link: '/recent',
       active: false
     },
     {

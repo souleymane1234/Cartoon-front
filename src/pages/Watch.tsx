@@ -13,14 +13,24 @@ const Watch = () => {
           sx={{ 
             flexGrow: 1, 
             p: 3, 
-            overflowY: 'auto' 
+            overflowY: 'auto' ,
+            flex: 3
           }}
         >
           <Main />
           <Personnages/>       
 
         </Box>
-        <Aside />
+        <Box 
+          sx={{ 
+            flex: 1, // Prend 1 part sur 3 (1/3 de l'espace)
+            overflowY: 'auto',
+            borderLeft: '1px solid',
+            borderColor: 'grey.200',
+          }}
+        >
+          <Aside />
+        </Box>
       </Box>
     </Box>
   );

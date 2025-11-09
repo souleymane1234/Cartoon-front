@@ -3,14 +3,14 @@ import {
   Typography,
   Button,
   CardContent,
-  Stack
+  Stack,
+  Card
 } from '@mui/material';
 import {
   Star
 } from '@mui/icons-material';
 
 const Aside = () => {
-
   const recommendations = [
     {
       id: 1,
@@ -34,97 +34,145 @@ const Aside = () => {
       type: "Série"
     }
   ];
+
   return (
-        <Box 
+    <Box 
+      sx={{ 
+        width: '100%', // Prend toute la largeur disponible (33.33%)
+        p: 2, // Padding réduit
+        overflowY: 'auto',
+        backgroundColor: 'white',
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <Typography 
+          variant="h6" 
+          component="h3" 
           sx={{ 
-            width: 500, 
-            p: 3, 
-            overflowY: 'auto',
-            elevation: 1,
-            backgroundColor: 'white',
-            border: 'none'
+            mb: 2, 
+            fontWeight: 600, 
+            textAlign: 'left',
+            fontSize: { xs: '1rem', md: '1.125rem' }
           }}
         >
-          <Box sx={{ mb: 3 }}>
-            <Typography 
-              variant="h6" 
-              component="h3" 
-              sx={{ mb: 3, fontWeight: 600, textAlign: 'left' }}
-            >
-              Recommander
-            </Typography>
-            
-            <Stack spacing={3}>
-              {recommendations.map((item) => (
-                              <Box 
-                className="overflow-hidden cursor-pointer"
-                sx={{ borderRadius: '0.75rem',
-                  '&:hover': {
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)', borderRadius: '0.75rem'
-                  }
-                }}
-              >
-                <Box 
-                  className={`relative w-full flex items-center justify-center`}
-                  sx={{ height: { xs: 128, md: 144 } }}
-                >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-48 object-cover rounded-lg mb-6"
-                    />
-                </Box>
-
-                <CardContent sx={{ padding: { xs: '12px', md: '16px' } }}>
-                  <Typography 
-                    variant="subtitle1" 
-                    className="font-semibold text-gray-900 mb-2 text-start"
-                    sx={{ 
-                      fontSize: { xs: '0.875rem', md: '1rem' },
-                      fontWeight: 600,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}
-                  >
-                    {item.title}
-                  </Typography>
-                  
-                  <Box className="flex items-center">
-                    <Star className="w-3 h-3 md:w-4 md:h-4 text-yellow-500 fill-current mr-1" />
-                    <Typography 
-                      className="font-medium text-gray-900 mr-2"
-                      sx={{ 
-                        fontSize: { xs: '0.75rem', md: '0.875rem' },
-                        fontWeight: 500
-                      }}
-                    >
-                      {item.rating}
-                    </Typography>
-                    <Typography 
-                      className="text-gray-500"
-                      sx={{ fontSize: { xs: '0.75rem', md: '0.875rem' } }}
-                    >
-                      • {item.type}
-                    </Typography>
-                  </Box>
-                </CardContent>
-              </Box>
-              ))}
-            </Stack>
-            
-            <Button
-              fullWidth
+          Recommandations
+        </Typography>
+        
+        <Stack spacing={2}>
+          {recommendations.map((item) => (
+            <Card 
+              key={item.id}
+              className="overflow-hidden cursor-pointer"
               sx={{ 
-                mt: 3,
-                color: '#4d2cf3',
-                '&:hover': { bgcolor: 'primary.50' }
+                borderRadius: '0.75rem',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                '&:hover': {
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                }
               }}
             >
-              Voir tout
-            </Button>
-          </Box>
+              {/* Image centrée et redimensionnée */}
+              <Box 
+                sx={{ 
+                  width: '100%',
+                  height: { xs: 120, sm: 140 },
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  overflow: 'hidden'
+                }}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block'
+                  }}
+                />
+              </Box>
+
+              <CardContent 
+                sx={{ 
+                  padding: { xs: '12px', sm: '16px' },
+                  width: '100%',
+                  textAlign: 'center'
+                }}
+              >
+                {/* Titre centré avec gestion du texte trop long */}
+                <Typography 
+                  variant="subtitle1" 
+                  sx={{ 
+                    fontSize: { xs: '0.875rem', sm: '0.9rem' },
+                    fontWeight: 600,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    textAlign: 'center',
+                    mb: 1
+                  }}
+                >
+                  {item.title}
+                </Typography>
+                
+                {/* Rating et type centrés */}
+                <Box 
+                  sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                    gap: 1
+                  }}
+                >
+                  <Star 
+                    sx={{ 
+                      fontSize: { xs: '0.875rem', sm: '1rem' },
+                      color: 'warning.main'
+                    }} 
+                  />
+                  <Typography 
+                    sx={{ 
+                      fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                      fontWeight: 500
+                    }}
+                  >
+                    {item.rating}
+                  </Typography>
+                  <Typography 
+                    sx={{ 
+                      fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                      color: 'text.secondary'
+                    }}
+                  >
+                    • {item.type}
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
+        </Stack>
+        
+        {/* Bouton centré */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button
+            variant="text"
+            sx={{ 
+              color: '#4d2cf3',
+              fontSize: { xs: '0.8rem', sm: '0.875rem' },
+              '&:hover': { 
+                backgroundColor: 'rgba(77, 44, 243, 0.04)' 
+              }
+            }}
+          >
+            Voir tout
+          </Button>
         </Box>
+      </Box>
+    </Box>
   );
 };
 
