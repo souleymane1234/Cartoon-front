@@ -191,7 +191,7 @@ const Main = () => {
                     <Box className="flex items-center">
                       <Star 
                         style={{ 
-                          fontSize: '0.875rem', 
+                          fontSize: '0.88rem', 
                           color: '#FFC107' // Replace 'warning.main' with the equivalent color code
                         }} 
                       />
