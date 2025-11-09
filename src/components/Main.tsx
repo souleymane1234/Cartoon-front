@@ -65,6 +65,11 @@ const fetchCartoons = async (): Promise<ApiResponse> => {
   return result;
 };
 
+// Fonction pour vérifier si l'URL est une URL d'embed
+const isEmbedUrl = (url: string): boolean => {
+  return url.includes('embed') || url.includes('iframe');
+};
+
 const Main: React.FC = () => {
   // Utilisation de React Query pour récupérer les données
   const { data, isLoading, error } = useQuery<ApiResponse, Error>({
@@ -79,6 +84,9 @@ const Main: React.FC = () => {
     { src: "/img/studio/sinanimation.png", alt: "Sin Animation" },
     { src: "/img/studio/brain.png", alt: "Brain Studio" },
   ];
+
+  // Récupérer le premier cartoon de l'API pour la section Hero
+  const featuredCartoon = data?.data?.[0];
 
   // Utiliser les données de l'API pour "Continuer à regarder"
   const continueWatchingVideos: ContinueWatchingVideo[] = data?.data?.map((cartoon: Cartoon) => ({
@@ -125,59 +133,118 @@ const Main: React.FC = () => {
       component="main" 
       className="flex-1 p-4 sm:p-6 lg:p-8 max-w-full overflow-x-hidden"
     >
-      {/* Hero Section */}
-      <Box 
-        className="relative rounded-2xl overflow-hidden mb-8 h-[300px] sm:h-[400px] bg-cover bg-center"
-        sx={{
-          backgroundImage: "url('/img/pokou.png')",
-          maxWidth: '100%',
-        }}
-      >
-        <Box className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
-        <Box className="relative h-full flex flex-col justify-center p-4 sm:p-6 lg:p-8">
-          <Box className="mb-4 max-w-full">
-            <Chip
-              label="Comédie"
-              className="bg-blue-600 text-white text-xs mb-4"
-              size="small"
-            />
-            <Typography
-              variant="h2"
-              component="h1"
-              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2"
-              sx={{ 
-                wordBreak: 'break-word',
-                maxWidth: '100%'
-              }}
-            >
-              Pokou, princesse ashanti
-            </Typography>
-            <Typography
-              variant="body1"
-              className="text-gray-200 mb-6 text-sm sm:text-base"
-              sx={{ 
-                wordBreak: 'break-word',
-                maxWidth: '100%'
-              }}
-            >
-              Long métrage • Culture • Afrikartoon • 2013
-            </Typography>
-          </Box>
+      {/* Hero Section avec le premier cartoon de l'API */}
+      {featuredCartoon && (
+        <Box 
+          className="relative rounded-2xl overflow-hidden mb-8 h-[300px] sm:h-[400px] bg-cover bg-center"
+          sx={{
+            backgroundImage: `url('${featuredCartoon.imageBackgroundUrl}')`,
+            maxWidth: '100%',
+          }}
+        >
+          <Box className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
+          <Box className="relative h-full flex flex-col justify-center p-4 sm:p-6 lg:p-8">
+            <Box className="mb-4 max-w-full">
+              <Chip
+                label={featuredCartoon.categoryCartoon?.name || "Animation"}
+                className="bg-blue-600 text-white text-xs mb-4"
+                size="small"
+                sx={{
+                  backgroundColor: featuredCartoon.categoryCartoon?.color || '#3b82f6',
+                }}
+              />
+              <Typography
+                variant="h2"
+                component="h1"
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2"
+                sx={{ 
+                  wordBreak: 'break-word',
+                  maxWidth: '100%'
+                }}
+              >
+                {featuredCartoon.title}
+              </Typography>
+              <Typography
+                variant="body1"
+                className="text-gray-200 mb-6 text-sm sm:text-base"
+                sx={{ 
+                  wordBreak: 'break-word',
+                  maxWidth: '100%'
+                }}
+              >
+                {featuredCartoon.categoryCartoon?.description || "Animation"} • {featuredCartoon.ratings} ⭐ • {new Date(featuredCartoon.createdAt).getFullYear()}
+              </Typography>
+            </Box>
 
-          <Box className="flex flex-row sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
-            <CustomButton
-              title="Regarder thriller"
-              icon={<Play className="h-4 w-4 sm:h-5 sm:w-5" />}
-              // link="/watch"
-            />
-            <CustomButtonWithoutBackground
-              title="Ajouter la liste"
-              icon={<Plus className="h-4 w-4 sm:h-5 sm:w-5" />}
-              // onClick={() => addToWatchlist()}
-            />
+            <Box className="flex flex-row sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+              <Link to={`/watch/${featuredCartoon.id}`} style={{ textDecoration: 'none' }}>
+                <CustomButton
+                  title="Regarder maintenant"
+                  icon={<Play className="h-4 w-4 sm:h-5 sm:w-5" />}
+                />
+              </Link>
+              <CustomButtonWithoutBackground
+                title="Ajouter à la liste"
+                icon={<Plus className="h-4 w-4 sm:h-5 sm:w-5" />}
+              />
+            </Box>
           </Box>
         </Box>
-      </Box>
+      )}
+
+      {/* Section de fallback si aucun cartoon n'est disponible */}
+      {!featuredCartoon && data?.data && data.data.length === 0 && (
+        <Box 
+          className="relative rounded-2xl overflow-hidden mb-8 h-[300px] sm:h-[400px] bg-cover bg-center"
+          sx={{
+            backgroundImage: "url('/img/pokou.png')",
+            maxWidth: '100%',
+          }}
+        >
+          <Box className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
+          <Box className="relative h-full flex flex-col justify-center p-4 sm:p-6 lg:p-8">
+            <Box className="mb-4 max-w-full">
+              <Chip
+                label="Comédie"
+                className="bg-blue-600 text-white text-xs mb-4"
+                size="small"
+              />
+              <Typography
+                variant="h2"
+                component="h1"
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2"
+                sx={{ 
+                  wordBreak: 'break-word',
+                  maxWidth: '100%'
+                }}
+              >
+                Pokou, princesse ashanti
+              </Typography>
+              <Typography
+                variant="body1"
+                className="text-gray-200 mb-6 text-sm sm:text-base"
+                sx={{ 
+                  wordBreak: 'break-word',
+                  maxWidth: '100%'
+                }}
+              >
+                Long métrage • Culture • Afrikartoon • 2013
+              </Typography>
+            </Box>
+
+            <Box className="flex flex-row sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+              <CustomButton
+                title="Regarder thriller"
+                icon={<Play className="h-4 w-4 sm:h-5 sm:w-5" />}
+              />
+              <CustomButtonWithoutBackground
+                title="Ajouter la liste"
+                icon={<Plus className="h-4 w-4 sm:h-5 sm:w-5" />}
+              />
+            </Box>
+          </Box>
+        </Box>
+      )}
 
       {/* Studio Logos - Responsive Grid */}
       <Box className="mb-8 sm:mb-12">
@@ -239,13 +306,29 @@ const Main: React.FC = () => {
             <Box key={index} className="flex-shrink-0 w-64 sm:w-80">
               <Link to={video.link}>
                 <Card className="rounded-xl overflow-hidden shadow-none mb-2">
-                  <Box
-                    component="video"
-                    src={video.src}
-                    poster={video.poster}
-                    controls
-                    className="w-full h-36 sm:h-48 object-cover"
-                  />
+                  {isEmbedUrl(video.src) ? (
+                    // Utiliser iframe pour les URLs d'embed
+                    <Box
+                      component="iframe"
+                      src={video.src}
+                      className="w-full h-36 sm:h-48"
+                      sx={{
+                        border: 'none',
+                        borderRadius: '12px',
+                      }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    // Utiliser video pour les URLs directes
+                    <Box
+                      component="video"
+                      src={video.src}
+                      poster={video.poster}
+                      controls
+                      className="w-full h-36 sm:h-48 object-cover"
+                    />
+                  )}
                 </Card>
               </Link>
               <Typography
@@ -283,34 +366,36 @@ const Main: React.FC = () => {
             sx={{ maxWidth: '100%' }}
           >
             {data.data.map((cartoon: Cartoon) => (
-              <Card key={cartoon.id} className="rounded-xl overflow-hidden shadow-none">
-                <CardMedia
-                  component="img"
-                  image={cartoon.imageBackgroundUrl}
-                  alt={cartoon.title}
-                  className="h-48 object-cover"
-                />
-                <Box className="p-4">
-                  <Typography variant="h6" className="font-semibold mb-2">
-                    {cartoon.title}
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-600 mb-2">
-                    {cartoon.description}
-                  </Typography>
-                  <Box className="flex justify-between items-center">
-                    {cartoon.categoryCartoon?.name && (
-                      <Chip
-                        label={cartoon.categoryCartoon.name}
-                        size="small"
-                        sx={{ backgroundColor: cartoon.categoryCartoon?.color || '#3b82f6', color: 'white' }}
-                      />
-                    )}
-                    <Typography variant="body2" className="font-semibold">
-                      ⭐ {cartoon.ratings}
+              <Link key={cartoon.id} to={`/watch/${cartoon.id}`} style={{ textDecoration: 'none' }}>
+                <Card className="rounded-xl overflow-hidden shadow-none hover:shadow-lg transition-shadow">
+                  <CardMedia
+                    component="img"
+                    image={cartoon.imageBackgroundUrl}
+                    alt={cartoon.title}
+                    className="h-48 object-cover"
+                  />
+                  <Box className="p-4">
+                    <Typography variant="h6" className="font-semibold mb-2">
+                      {cartoon.title}
                     </Typography>
+                    <Typography variant="body2" className="text-gray-600 mb-2 line-clamp-2">
+                      {cartoon.description}
+                    </Typography>
+                    <Box className="flex justify-between items-center">
+                      {cartoon.categoryCartoon?.name && (
+                        <Chip
+                          label={cartoon.categoryCartoon.name}
+                          size="small"
+                          sx={{ backgroundColor: cartoon.categoryCartoon?.color || '#3b82f6', color: 'white' }}
+                        />
+                      )}
+                      <Typography variant="body2" className="font-semibold">
+                        ⭐ {cartoon.ratings}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </Card>
+                </Card>
+              </Link>
             ))}
           </Box>
         </Box>
